@@ -29,21 +29,6 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
         Application.Run(new TrayForm());
-
-        /*
-        var dw = (FP.SetWallpaper.COM.IDesktopWallpaper)new FP.SetWallpaper.COM.DesktopWallpaper();
-        var dict = new Dictionary<string, string?>();
-
-        dw.GetMonitorDevicePathCount(out var count);
-
-        for (uint i = 0; i < count; i++)
-        {
-            dw.GetMonitorDevicePathAt(i, out var id);
-            dw.GetWallpaper(id, out var path);
-
-            dict.Add(id, path);
-        }
-        */
     }
     
     /// <summary>
@@ -79,8 +64,10 @@ internal static class Program
         }
         catch (Exception ex)
         {
+            // TODO: Log exception to Windows event log.
+            
             MessageBox.Show(
-                ex.Message,
+                "Unable to open registry key.",
                 "Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
@@ -110,8 +97,10 @@ internal static class Program
         }
         catch (Exception ex)
         {
+            // TODO: Log exception to Windows event log.
+            
             MessageBox.Show(
-                ex.Message,
+                "Unable to open registry key.",
                 "Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);

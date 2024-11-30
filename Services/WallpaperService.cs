@@ -44,8 +44,10 @@ public class WallpaperService : IWallpaperService
         }
         catch (Exception ex)
         {
+            // TODO: Log exception to Windows event log.
+            
             MessageBox.Show(
-                ex.Message,
+                "Unable to get monitor count.",
                 "Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
@@ -72,8 +74,10 @@ public class WallpaperService : IWallpaperService
         }
         catch (Exception ex)
         {
+            // TODO: Log exception to Windows event log.
+            
             MessageBox.Show(
-                ex.Message,
+                $"Unable to get ID for monitor {index + 1}",
                 "Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
@@ -107,8 +111,10 @@ public class WallpaperService : IWallpaperService
             }
             catch (Exception ex)
             {
+                // TODO: Log exception to Windows event log.
+                
                 MessageBox.Show(
-                    ex.Message,
+                    $"Unable to get files from {Config.Values.WallpaperPath}",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -187,8 +193,10 @@ public class WallpaperService : IWallpaperService
         }
         catch (Exception ex)
         {
+            // TODO: Log exception to Windows event log.
+            
             MessageBox.Show(
-                ex.Message,
+                $"Unable to set \"{path}\" as wallpaper for monitor {monitorId}",
                 "Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);

@@ -7,6 +7,11 @@ namespace Mural;
 public static class Config
 {
     /// <summary>
+    /// Full path to config file.
+    /// </summary>
+    private static readonly string FilePath = Path.Combine(Application.StartupPath, "config.json");
+    
+    /// <summary>
     /// Loaded config values.
     /// </summary>
     public static IConfigValues Values { get; private set; } = new ConfigValues();
@@ -18,14 +23,12 @@ public static class Config
     {
         try
         {
-            var path = Path.Combine(Application.StartupPath, "config.json");
-
-            if (!File.Exists(path))
+            if (!File.Exists(FilePath))
             {
                 return;
             }
 
-            var json = File.ReadAllText(path, Encoding.UTF8);
+            var json = File.ReadAllText(FilePath, Encoding.UTF8);
             var values = JsonSerializer.Deserialize<ConfigValues>(json)
                          ?? throw new Exception("Unable to deserialize loaded config.");
 
@@ -34,7 +37,7 @@ public static class Config
         catch (Exception ex)
         {
             MessageBox.Show(
-                ex.Message,
+                $"Unable to load config from {FilePath}{Environment.NewLine}{ex.Message}",
                 "Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
@@ -48,15 +51,14 @@ public static class Config
     {
         try
         {
-            var path = Path.Combine(Application.StartupPath, "config.json");
             var json = JsonSerializer.Serialize(Values);
 
-            File.WriteAllText(path, json, Encoding.UTF8);
+            File.WriteAllText(FilePath, json, Encoding.UTF8);
         }
         catch (Exception ex)
         {
             MessageBox.Show(
-                ex.Message,
+                $"Unable to load config from {FilePath}{Environment.NewLine}{ex.Message}",
                 "Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
