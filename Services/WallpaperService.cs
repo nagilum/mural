@@ -2,6 +2,8 @@
 
 public class WallpaperService : IWallpaperService
 {
+    
+    
     /// <summary>
     /// Desktop wallpaper integration.
     /// </summary>
@@ -20,9 +22,22 @@ public class WallpaperService : IWallpaperService
     private int _fileIndex = -1;
     
     /// <summary>
+    /// Full path to file-index file.
+    /// </summary>
+    private readonly string _fileIndexPath = Path.Combine(Application.StartupPath, "file-index.save");
+    
+    /// <summary>
     /// Auto-changer function thread.
     /// </summary>
     private Thread? _autoChangerThread;
+
+    /// <summary>
+    /// Set up the wallpaper service.
+    /// </summary>
+    public WallpaperService()
+    {
+        this.LoadFileIndex();
+    }
     
     #region IWallpaperService functions
 
@@ -168,6 +183,8 @@ public class WallpaperService : IWallpaperService
 
             if (File.Exists(file))
             {
+                this.SaveFileIndex();
+                
                 path = file;
                 break;
             }
@@ -296,6 +313,55 @@ public class WallpaperService : IWallpaperService
             {
                 break;
             }
+        }
+    }
+
+    /// <summary>
+    /// Load file index from disk.
+    /// </summary>
+    private void LoadFileIndex()
+    {
+        try
+        {
+            if (!File.Exists(_fileIndexPath))
+            {
+                return;
+            }
+
+            var content = File.ReadAllText(_fileIndexPath);
+
+            if (int.TryParse(content, out var index) &&
+                index > -1)
+            {
+                _fileIndex = index;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"Unable to load file-index from {_fileIndexPath}{Environment.NewLine}{ex.Message}",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+    }
+
+    /// <summary>
+    /// Save current file index to disk.
+    /// </summary>
+    private void SaveFileIndex()
+    {
+        try
+        {
+            File.WriteAllText(_fileIndexPath, _fileIndex.ToString());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"Unable to save file-index to {_fileIndexPath}{Environment.NewLine}{ex.Message}",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
     
